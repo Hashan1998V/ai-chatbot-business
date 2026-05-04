@@ -146,9 +146,9 @@ def logout():
     session.clear()
     return redirect(url_for('home'))
 
+init_db()
+init_memory_table()
+init_payment_table()
 
 if __name__ == '__main__':
-    init_db()
-    init_memory_table()
-    init_payment_table()
     app.run(debug=True)
