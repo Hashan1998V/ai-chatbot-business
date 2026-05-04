@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create AI Partner</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #101827, #263b63);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .container {
+            width: 900px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #cbd5e1;
+            margin-bottom: 30px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            outline: none;
+            font-size: 15px;
+        }
+
+        textarea {
+            height: 100px;
+            resize: none;
+        }
+
+        .preview {
+            text-align: center;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 25px;
+        }
+
+        .avatar {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #8b5cf6;
+            margin-bottom: 15px;
+        }
+
+        button {
+            margin-top: 30px;
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #7c3aed, #2563eb);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Create Your AI Partner</h1>
+    <p class="subtitle">Choose name, gender, personality and avatar for your AI partner</p>
+
+    <form method="POST" enctype="multipart/form-data">
+        <div class="form-grid">
+
+            <div>
+                <label>Partner Name</label>
+                <input type="text" name="partner_name" placeholder="Example: Luna, John" required>
+
+                <br><br>
+
+                <label>Partner Type</label>
+                <select name="partner_gender" required>
+                    <option value="female">Female Partner</option>
+                    <option value="male">Male Partner</option>
+                </select>
+
+                <br><br>
+
+                <label>Personality</label>
+                <select name="partner_personality" required>
+                    <option value="sweet and caring">Sweet and Caring</option>
+                    <option value="funny and playful">Funny and Playful</option>
+                    <option value="romantic and emotional">Romantic and Emotional</option>
+                    <option value="calm and supportive">Calm and Supportive</option>
+                </select>
+
+                <br><br>
+
+                <label>Upload Partner Photo</label>
+<input type="file" name="partner_photo" accept="image/*" onchange="previewAvatar(event)">
+
+<br><br>
+
+<label>Body Type</label>
+<select name="body_type">
+    <option value="slim body">Slim body</option>
+    <option value="average body">Average body</option>
+    <option value="curvy body">Curvy body</option>
+    <option value="fit body">Fit body</option>
+</select>
+
+<br><br>
+
+<label>Hair Style</label>
+<select name="hair_style">
+    <option value="long hair">Long hair</option>
+    <option value="short hair">Short hair</option>
+    <option value="curly hair">Curly hair</option>
+    <option value="straight hair">Straight hair</option>
+</select>
+
+<br><br>
+
+<label>Style</label>
+<select name="fashion_style">
+    <option value="casual modern clothes">Casual modern</option>
+    <option value="elegant outfit">Elegant</option>
+    <option value="sporty outfit">Sporty</option>
+    <option value="cute friendly outfit">Cute friendly</option>
+</select>
+
+
+
+                <br><br>
+
+                <label>Describe your partner</label>
+                <textarea name="partner_description" placeholder="Example: long hair, kind smile, modern style, friendly personality"></textarea>
+            </div>
+
+            <div class="preview">
+                <img id="avatarPreview" class="avatar" src="https://api.dicebear.com/7.x/personas/svg?seed=partner">
+                <h2>Your AI Partner</h2>
+                <p>After creating, you can chat with your selected partner.</p>
+                <p>Voice speaking will be enabled inside chat.</p>
+            </div>
+
+        </div>
+
+        <button type="submit">Create AI Partner</button>
+    </form>
+</div>
+<script>
+function previewAvatar(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const imageUrl = URL.createObjectURL(file);
+    document.getElementById("avatarPreview").src = imageUrl;
+}
+</script>
+</body>
+</html>

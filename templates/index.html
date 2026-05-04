@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Partner Chat</title>
+  <title>{{ partner_name }} Chat</title>
 
   <style>
     * {
@@ -48,7 +48,19 @@
       background: rgba(255,255,255,0.03);
       flex-shrink: 0;
     }
+    .partner-avatar {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #8b5cf6;
+}
 
+    .chat-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+}
     .chat-header h1 {
       font-size: 20px;
       font-weight: bold;
@@ -142,8 +154,18 @@
       justify-content: flex-end;
     }
 
+    .chat-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 10px;
+     border: 2px solid #8b5cf6;
+    }
+
     .message-row.bot {
-      justify-content: flex-start;
+      display: flex;
+      align-items: flex-start;
     }
 
     .message-wrap {
@@ -235,13 +257,17 @@
 <body>
 
   <div class="main-chat">
-    <div class="chat-header">
-      <h1>Chat with your AI Partner</h1>
+<div class="chat-header">
+    <img src="{{ partner_avatar }}" class="partner-avatar">
+    <div>
+        <h3>Chat with {{ partner_name }}</h3>
+        <p>{{ greeting }}</p>
     </div>
+</div>
 
     <div class="chat-body" id="chatBody"></div>
 
-    <div class="typing" id="typingText">AI Partner is ready...</div>
+    <div class="typing" id="typingText">{{ partner_name }} is ready...</div>
 
     <div class="input-area">
       <form class="input-box" id="chatForm">
@@ -285,11 +311,11 @@
       const randomIndex = Math.floor(Math.random() * starterQuestions.length);
       const question = starterQuestions[randomIndex];
 
-      typingText.textContent = "AI Partner is typing...";
+      typingText.textContent = "{{ partner_name }} is typing...";
 
       setTimeout(() => {
         addMessage(question, "bot");
-        typingText.textContent = "AI Partner is ready...";
+        typingText.textContent = "{{ partner_name }} is ready...";
         starterShown = true;
       }, 2500);
     }
@@ -310,23 +336,36 @@
     function scrollToBottom() {
       chatBody.scrollTop = chatBody.scrollHeight;
     }
+function speakText(text) {
+    const speech = new SpeechSynthesisUtterance(text);
+    speech.lang = "en-US";
+    speech.rate = 1;
+    speech.pitch = 1;
+    window.speechSynthesis.speak(speech);
+}
 
-    function addMessage(text, sender) {
-      const row = document.createElement("div");
-      row.className = `message-row ${sender}`;
+function addMessage(text, sender) {
+  const row = document.createElement("div");
+  row.className = `message-row ${sender}`;
 
-      const name = sender === "user" ? "You" : "AI Partner";
+  const name = sender === "user" ? "You" : "{{ partner_name }}";
 
-      row.innerHTML = `
-        <div class="message-wrap">
-          <div class="message ${sender}">${text}</div>
-          <div class="meta">${name} • ${getTime()}</div>
-        </div>
-      `;
+  // ✅ avatar for bot
+  const avatar = sender === "bot"
+    ? `<img src="{{ partner_avatar }}" class="chat-avatar">`
+    : "";
 
-      chatBody.appendChild(row);
-      scrollToBottom();
-    }
+  row.innerHTML = `
+    ${avatar}
+    <div class="message-wrap">
+      <div class="message ${sender}">${text}</div>
+      <div class="meta">${name} • ${getTime()}</div>
+    </div>
+  `;
+
+  chatBody.appendChild(row);
+  scrollToBottom();
+}
 
     chatForm.addEventListener("submit", async function (e) {
       e.preventDefault();
@@ -336,7 +375,7 @@
 
       addMessage(text, "user");
       messageInput.value = "";
-      typingText.textContent = "AI Partner is typing...";
+      typingText.textContent = "{{ partner_name }} is typing...";
 
       try {
         const response = await fetch("/api/chat", {
@@ -351,11 +390,12 @@
 
         setTimeout(() => {
           addMessage(data.reply || "Sorry, I could not reply properly.", "bot");
-          typingText.textContent = "AI Partner is ready...";
+          speakText(data.reply);
+          typingText.textContent = "{{ partner_name }} is ready...";
         }, 700);
       } catch (error) {
         addMessage("Sorry, something went wrong.", "bot");
-        typingText.textContent = "AI Partner is ready...";
+        typingText.textContent = "{{ partner_name }} is ready...";
       }
     });
 
