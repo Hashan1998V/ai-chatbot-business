@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Partner Login</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background:
+        radial-gradient(circle at top left, rgba(108, 99, 255, 0.25), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(0, 191, 255, 0.18), transparent 30%),
+        linear-gradient(135deg, #0f172a, #16213e, #1f3a5f);
+      overflow: hidden;
+      position: relative;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      filter: blur(90px);
+      z-index: 0;
+    }
+
+    body::before {
+      background: rgba(108, 99, 255, 0.28);
+      top: -80px;
+      left: -80px;
+    }
+
+    body::after {
+      background: rgba(0, 183, 255, 0.18);
+      bottom: -100px;
+      right: -80px;
+    }
+
+    .login-wrapper {
+      width: 100%;
+      max-width: 1080px;
+      min-height: 650px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 30px;
+      overflow: hidden;
+      backdrop-filter: blur(18px);
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.45);
+      position: relative;
+      z-index: 1;
+    }
+
+    .left-panel {
+      padding: 60px 50px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #dbe6ff;
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #6c63ff, #8a7dff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 18px;
+      box-shadow: 0 12px 24px rgba(108, 99, 255, 0.35);
+    }
+
+    .left-panel h1 {
+      font-size: 52px;
+      line-height: 1.12;
+      margin-bottom: 18px;
+    }
+
+    .left-panel p {
+      font-size: 17px;
+      line-height: 1.8;
+      color: #d7def5;
+      max-width: 460px;
+      margin-bottom: 34px;
+    }
+
+    .feature-list {
+      display: grid;
+      gap: 14px;
+      max-width: 420px;
+    }
+
+    .feature-item {
+      padding: 16px 18px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #f3f6ff;
+      font-size: 15px;
+    }
+
+    .right-panel {
+      background: rgba(255,255,255,0.96);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 390px;
+    }
+
+    .login-card h2 {
+      font-size: 34px;
+      color: #101828;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .subtext {
+      text-align: center;
+      color: #667085;
+      font-size: 14px;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .flash {
+      background: #ffe2e2;
+      color: #b42318;
+      border: 1px solid #ffc7c7;
+      padding: 12px;
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+
+    .input-group {
+      margin-bottom: 16px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #344054;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 15px 16px;
+      border-radius: 14px;
+      border: 1px solid #d0d5dd;
+      background: #f9fafb;
+      font-size: 15px;
+      outline: none;
+      transition: 0.2s ease;
+    }
+
+    .input-group input:focus {
+      border-color: #7c6cff;
+      background: white;
+      box-shadow: 0 0 0 4px rgba(124, 108, 255, 0.14);
+    }
+
+    .form-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 6px 0 20px;
+      font-size: 14px;
+      color: #475467;
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .remember-me input {
+      width: auto;
+    }
+
+    .forgot-link {
+      color: #6c63ff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .login-btn {
+      width: 100%;
+      border: none;
+      padding: 15px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #6c63ff, #8a7dff);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s ease;
+      box-shadow: 0 12px 28px rgba(108, 99, 255, 0.25);
+    }
+
+    .login-btn:hover {
+      transform: translateY(-1px);
+      opacity: 0.96;
+    }
+
+    .divider {
+      text-align: center;
+      color: #98a2b3;
+      margin: 22px 0 16px;
+      font-size: 14px;
+      position: relative;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 36%;
+      height: 1px;
+      background: #e4e7ec;
+    }
+
+    .divider::before {
+      left: 0;
+    }
+
+    .divider::after {
+      right: 0;
+    }
+
+    .social-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid #d0d5dd;
+      background: white;
+      font-size: 15px;
+      font-weight: 600;
+      color: #344054;
+      cursor: pointer;
+      margin-bottom: 12px;
+      transition: 0.2s ease;
+    }
+
+    .social-btn:hover {
+      background: #f9fafb;
+    }
+
+    .bottom-text {
+      margin-top: 18px;
+      text-align: center;
+      color: #667085;
+      font-size: 14px;
+    }
+
+    .bottom-text a {
+      color: #6c63ff;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    @media (max-width: 920px) {
+      .login-wrapper {
+        grid-template-columns: 1fr;
+        max-width: 480px;
+        min-height: auto;
+      }
+
+      .left-panel {
+        padding: 36px 28px;
+      }
+
+      .left-panel h1 {
+        font-size: 36px;
+      }
+
+      .left-panel p {
+        font-size: 15px;
+      }
+
+      .right-panel {
+        padding: 28px 22px 32px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      body {
+        padding: 14px;
+      }
+
+      .login-wrapper {
+        border-radius: 22px;
+      }
+
+      .left-panel,
+      .right-panel {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .login-card h2 {
+        font-size: 28px;
+      }
+
+      .form-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-wrapper">
+    <div class="left-panel">
+      <div class="brand">
+        <div class="brand-icon">AI</div>
+        <span>AI Partner</span>
+      </div>
+
+      <h1>Your smart companion is waiting.</h1>
+      <p>
+        Continue your private conversations, save your memories, and enjoy a more personal AI partner experience with a premium modern interface.
+      </p>
+
+      <div class="feature-list">
+        <div class="feature-item">💬 Continue your previous chats anytime</div>
+        <div class="feature-item">🧠 Save memory, mood, and preferences</div>
+        <div class="feature-item">🔒 Secure login with a clean premium design</div>
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <div class="login-card">
+        <h2>Welcome back</h2>
+        <div class="subtext">Login to continue chatting with your AI partner</div>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for msg in messages %}
+              <div class="flash">{{ msg }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="/login">
+          <div class="input-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+          </div>
+
+          <div class="input-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+          </div>
+
+          <div class="form-row">
+            <label class="remember-me">
+              <input type="checkbox" name="remember">
+              <span>Remember me</span>
+            </label>
+            <a href="#" class="forgot-link">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="login-btn">Login</button>
+        </form>
+
+        <div class="divider">or continue with</div>
+
+        <button class="social-btn" type="button">Continue with Google</button>
+        <button class="social-btn" type="button">Continue with Apple</button>
+
+        <div class="bottom-text">
+          Don’t have an account? <a href="/signup">Sign up</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

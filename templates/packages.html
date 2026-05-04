@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Package</title>
+</head>
+<body>
+    <h2>Select Your Package</h2>
+
+    {% for key, package in packages.items() %}
+        <div style="border:1px solid #ccc; padding:20px; margin:15px;">
+            <h3>{{ package.name }}</h3>
+            <p>Messages: {{ package.messages }}</p>
+            <p>Price: ${{ package.price / 100 }}</p>
+
+            <form action="/create-checkout-session/{{ key }}" method="POST">
+                <button type="submit">Buy Now</button>
+            </form>
+        </div>
+    {% endfor %}
+</body>
+</html>
